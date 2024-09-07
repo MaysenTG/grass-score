@@ -16,6 +16,11 @@
     <%= form.text_field :name, class: "form-control" %>
   </div>
 
+  <div class="mb-3">
+    <%= form.label :winning_score, class: "form-label" %>
+    <%= form.number_field :winning_score, class: "form-control", min: 0, max: 5_000_000 %>
+  </div>
+
   <div class="mb-5">
     <%= form.submit submit_text, class: "btn btn-primary" %>
   </div>

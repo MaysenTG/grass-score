@@ -15,10 +15,6 @@ class Score < ApplicationRecord
 
   validate :score_can_be_edited?, on: :update
 
-  def total_final_score
-    self[:total_final_score] + round_win_bonus
-  end
-
   def score_can_be_edited?
     if round.finished?
       errors.add(:base, "This round has already been finished")

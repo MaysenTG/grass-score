@@ -17,7 +17,7 @@
     <% if @game.rounds.count == 0 %>
       <%= link_to "Add a player", new_game_player_path(@game) %>
     <% else %>
-      Cannot add a new player
+      <span data-bs-toggle="tooltip" data-controller="tooltips" data-bs-title="Players cannot be added after the game has started">Add a player</span>
     <% end %>
   </div>
 </div>
@@ -37,7 +37,13 @@
         </ul>
       </div>
     <% end %>
-    <%= form.submit "New round", class: "btn btn-primary", disabled: @create_round_disabled %>
+    <% if @create_round_disabled %>
+      <div data-controller="tooltips" data-bs-toggle="tooltip" data-bs-title="A new round cannot be created as one still in progress">
+    <% else %>
+      <div>
+    <% end %>
+      <%= form.submit "New round", class: "btn btn-primary", disabled: @create_round_disabled %>
+    </div>
   <% end %>
 </div>
 
@@ -52,7 +58,14 @@
           <div class="d-flex align-items-center">
             <%= player.name %>
             <% if @game.rounds.empty? %>
-              <%= button_to "X", game_player_path(@game, player), form: { data: { turbo_confirm: "Are you sure you want to delete this player?" } }, method: :delete, class: "btn" %>
+              <%= button_to game_player_path(@game, player), form: { data: { turbo_confirm: "Are you sure you want to delete this player?" } }, method: :delete, class: "btn" do %>
+                <i class="bi bi-trash-fill"></i>
+              <% end %>
+            <% end %>
+            <% unless @game.finished? %>
+              <%= link_to edit_game_player_path(@game, player), class: "btn" do %>
+                <i class="bi bi-pencil-fill"></i>
+              <% end %>
             <% end %>
           </div>
         </th>
@@ -84,10 +97,10 @@
               <% if score %>
                 <%= number_to_currency(score.total_final_score) %>
                 <% if score.banker? %>
-                  <i class="bi bi-bank"></i>
+                  <i class="bi bi-bank" data-bs-toggle="tooltip" data-bs-title="This player was the banker for this round" data-controller="tooltips"></i>
                 <% end %>
                 <% if round.winner == player %>
-                  <i class="bi bi-trophy-fill"></i>
+                  <i class="bi bi-trophy-fill" data-bs-toggle="tooltip" data-bs-title="This winner won the round. They received a $20,000 cash bonus" data-controller="tooltips"></i>
                 <% end %>
               <% else %>
                 <%= link_to "Score player", new_game_round_score_path(@game, round, player_id: player.id) %>
@@ -116,7 +129,14 @@
   <% end %>
 </table>
 
-
 <% unless @game.finished? %>
   <%= button_to "Finish game", game_finish_path(@game), form: { data: { turbo_confirm: "Are you sure you want to finish this game?" } }, method: :put, class: "btn btn-primary" %>
 <% end %>
+
+<div data-controller="game-rounds-reports" class="mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Player scores over the game</h1>
+  </div>
+  <div hidden data-game-rounds-reports-target="gameId"><%= @game.id %></div>
+  <div class="d-flex justify-content-center align-items-center" data-game-rounds-reports-target="chart"></div>
+</div>

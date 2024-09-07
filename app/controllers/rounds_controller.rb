@@ -1,6 +1,7 @@
 class RoundsController < ApplicationController
   before_action :set_game
   before_action :set_round, only: %i[ show edit update destroy ]
+  before_action :return_to_game, only: %i[ new create edit update destroy ]
 
   # GET /rounds or /rounds.json
   def index

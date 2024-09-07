@@ -1,12 +1,5 @@
 <% content_for :title, "Editing player" %>
 
-<h1>Editing player</h1>
+<%= render partial: "layouts/header_and_button", locals: { :header => "Editing #{@player.name}", :link_title => "Back to game", :route => game_path(@game) } %>
 
 <%= render "form", player: @player %>
-
-<br>
-
-<div>
-  <%= link_to "Show this player", [@game, @player] %> |
-  <%= link_to "Back to players", game_players_path %>
-</div>

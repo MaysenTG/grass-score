@@ -1,6 +1,21 @@
 Rails.application.routes.draw do
-  get "reports/index"
-  get "reports/show"
+  get "reports", controller: :reports, action: :index
+
+  namespace :reports do
+    resources :games, only: [:index]
+  end
+
+  namespace :api do
+    namespace :reports do
+      # resources :games, only: [:index, :show]
+      # resources :rounds, only: [:index, :show]
+      # resources :scores, only: [:index, :show]
+      namespace :games do
+        resources :rounds
+      end
+    end
+  end
+
   resources :games do
     put :finish
     resources :rounds do

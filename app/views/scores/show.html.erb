@@ -1,4 +1,4 @@
-<%= render partial: "layouts/header_and_button", locals: { :header => "Score for #{@score.player.name}", :link_title => "Back to score", :route => game_round_path(@game, @round) } %>
+<%= render partial: "layouts/header_and_button", locals: { :header => "Score for #{@score.player.name}", :link_title => "Back to round", :route => game_round_path(@game, @round) } %>
 
 <%= form_with(model: [@game, @round, @score], html: { disabled: true }) do |form| %>
   <div class="row">

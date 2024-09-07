@@ -1,5 +1,6 @@
 class GamesController < ApplicationController
   before_action :set_game, only: %i[ show edit update destroy ]
+  before_action :return_to_game, only: %i[ new create edit update destroy ]
 
   # GET /games or /games.json
   def index
@@ -68,14 +69,11 @@ class GamesController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_game
-    # @game = Game.includes(:rounds).find(params[:id])
     @game = Game.includes(rounds: :scores, players: :scores).find(params[:id])
   end
 
-  # Only allow a list of trusted parameters through.
   def game_params
-    params.require(:game).permit(:name)
+    params.require(:game).permit(:name, :winning_score)
   end
 end

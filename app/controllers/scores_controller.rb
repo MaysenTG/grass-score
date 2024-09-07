@@ -3,6 +3,7 @@ class ScoresController < ApplicationController
   before_action :set_round
   before_action :set_score, only: %i[ show edit update destroy ]
   before_action :return_to_rounds, if: -> { @round.scores.count == @game.players.count }, only: %i[ new ]
+  before_action :return_to_game, only: %i[ new create edit update destroy ]
 
   # GET /scores or /scores.json
   def index

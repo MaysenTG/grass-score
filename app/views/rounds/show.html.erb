@@ -35,18 +35,26 @@
                 - <span class="text-success">This player is the banker<span>
               <% end %>
             </h5>
+            <strong>Market stats:</strong>
             <ul>
               <li>Protected peddle: <%= number_to_currency(score.protected_peddle) %></li>
               <li>Unprotected peddle: <%= number_to_currency(score.unprotected_peddle) %></li>
               <li>Highest peddle in handle: <%= number_to_currency(score.highest_peddle_in_hand) %></li>
-              <% unless score.round_win_bonus == 0 %>
-                <li>Round win bonus <%= number_to_currency(score.round_win_bonus) %></li>
-              <% end %>
-              <li>Banker <%= score.banker? ? "additions" : "deductions"%>: <%= number_to_currency(score.banker_value) %></li>
+            </ul>
+            <strong>Paranoia stats:</strong>
+            <ul>
               <li>Number of sold out: <%= score.num_sold_out %></li>
               <li>Number of double crossed: <%= score.num_double_crossed %></li>
               <li>Number of utterly wiped out: <%= score.num_utterly_wiped_out %></li>
             </ul>
+            <strong>Misc stats:</strong>
+            <ul>
+              <% unless score.round_win_bonus == 0 %>
+                <li>Round win bonus <%= number_to_currency(score.round_win_bonus) %></li>
+              <% end %>
+              <li>Banker <%= score.banker? ? "additions" : "deductions"%>: <%= number_to_currency(score.banker_value) %></li>
+            </ul>
+            <strong>Overall:</strong>
             <p class="d-flex flex-column">
               <p>Total score without banker: <%= number_to_currency(score.total_pre_banker_score) %></p>
               <p>Total score with banker: <%= number_to_currency(score.total_final_score) %></p>

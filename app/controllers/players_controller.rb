@@ -2,6 +2,7 @@ class PlayersController < ApplicationController
   before_action :set_game
   before_action :set_player, only: %i[ show edit update destroy ]
   before_action :can_create_player?
+  before_action :return_to_game, only: %i[ new create edit update destroy ]
 
   # GET /players or /players.json
   def index
@@ -42,7 +43,7 @@ class PlayersController < ApplicationController
   def update
     respond_to do |format|
       if @player.update(player_params)
-        format.html { redirect_to game_player_url(@player), notice: "Player was successfully updated." }
+        format.html { redirect_to @game, notice: "Player was successfully updated." }
         format.json { render :show, status: :ok, location: @player }
       else
         format.html { render :edit, status: :unprocessable_entity }

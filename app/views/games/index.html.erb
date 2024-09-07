@@ -8,35 +8,43 @@
 </div>
 
 <div class="row row-cols-1 row-cols-md-1 g-4">
-  <% @games.each do |game| %>
+  <% if @games.empty? %>
     <div class="col">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">
-            <%= game.name %> (created <%= time_ago_in_words(game.created_at) %> ago)
-            <% if game.finished? %>
-              <span class="badge bg-success">Finished</span>
-              <span class="badge bg-success">Winner: <%= game.leading_player.name %></span>
-            <% end %>
-          </h5>
-          <p class="card-text">
-            <%= game.rounds.count %> rounds
-          </p>
-          <p class="card-text">
-            <%= game.players.count %> players
-          </p>
-          <p class="card-text">
-            <% if game.leading_player %>
-              Leading player: <%= game.leading_player.name %>
-            <% else %>
-              No leading player
-            <% end %>
-          </p>
-          <p class="card-text">
-            <%= link_to "Show this game", game %>
-          </p>
-        </div>
+      <div class="alert alert-info fade show mt-1" role="alert">
+        No games have been created yet
       </div>
     </div>
+  <% else %>
+    <% @games.each do |game| %>
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= game.name %> (created <%= time_ago_in_words(game.created_at) %> ago)
+              <% if game.finished? %>
+                <span class="badge bg-success">Finished</span>
+                <span class="badge bg-success">Winner: <%= game.leading_player.name %></span>
+              <% end %>
+            </h5>
+            <p class="card-text">
+              <%= game.rounds.count %> rounds
+            </p>
+            <p class="card-text">
+              <%= game.players.count %> players
+            </p>
+            <p class="card-text">
+              <% if game.leading_player %>
+                Leading player: <%= game.leading_player.name %>
+              <% else %>
+                No leading player
+              <% end %>
+            </p>
+            <p class="card-text">
+              <%= link_to "Show this game", game %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
   <% end %>
 </div>
