@@ -4,7 +4,18 @@ class GamesController < ApplicationController
 
   # GET /games or /games.json
   def index
-    @games = Game.all
+    if params[:search].present?
+      @games = Game.where("name ILIKE ?", "%#{params[:search]}%")
+    else
+      @games = Game.all
+    end
+
+    @query = params[:search]
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream { render partial: "games_list", locals: { games: @games, query: params[:search] } }
+    end
   end
 
   # GET /games/1 or /games/1.json
