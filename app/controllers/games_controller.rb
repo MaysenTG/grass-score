@@ -5,6 +5,7 @@ class GamesController < ApplicationController
   # GET /games or /games.json
   def index
     @games = GamesFinder.query(params: games_search_params)
+
     @query = games_search_params[:name]
 
     respond_to do |format|

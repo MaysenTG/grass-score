@@ -1,13 +1,14 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["input"];
+  static targets = ["input", "clearText", "loadingText"];
 
   connect() {
     this.timeout = null;
   }
 
   perform() {
+    this.showLoading();
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       const inputValue = this.inputTarget.value;
@@ -21,7 +22,8 @@ export default class extends Controller {
 
       window.history.replaceState({}, "", url);
       this.element.requestSubmit();
-    }, 300); // Adjust the debounce delay as needed
+      this.removeLoading();
+    }, 500); // Adjust the debounce delay as needed
   }
 
   clearAndRefetch() {
@@ -30,5 +32,15 @@ export default class extends Controller {
     url.searchParams.delete("name");
     window.history.replaceState({}, "", url);
     this.element.requestSubmit();
+  }
+
+  showLoading() {
+    this.loadingTextTarget.classList.remove("d-none");
+    this.clearTextTarget.classList.add("d-none");
+  }
+
+  removeLoading() {
+    this.loadingTextTarget.classList.add("d-none");
+    this.clearTextTarget.classList.remove("d-none");
   }
 }
