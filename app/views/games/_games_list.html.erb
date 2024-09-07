@@ -12,33 +12,7 @@
   <% else %>
     <% @games.each do |game| %>
       <div class="col">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">
-              <%= game.name %> (created <%= time_ago_in_words(game.created_at) %> ago)
-              <% if game.finished? %>
-                <span class="badge bg-success">Finished</span>
-                <span class="badge bg-success">Winner: <%= game.leading_player.name %></span>
-              <% end %>
-            </h5>
-            <p class="card-text">
-              <%= game.rounds.count %> rounds
-            </p>
-            <p class="card-text">
-              <%= game.players.count %> players
-            </p>
-            <p class="card-text">
-              <% if game.leading_player %>
-                Leading player: <%= game.leading_player.name %>
-              <% else %>
-                No leading player
-              <% end %>
-            </p>
-            <p class="card-text">
-              <%= link_to "Show this game", game %>
-            </p>
-          </div>
-        </div>
+        <%= render partial: "game_card", locals: { game: game } %>
       </div>
     <% end %>
   <% end %>

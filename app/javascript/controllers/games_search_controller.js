@@ -14,9 +14,9 @@ export default class extends Controller {
       const url = new URL(window.location.href);
 
       if (inputValue) {
-        url.searchParams.set("search", inputValue);
+        url.searchParams.set("name", inputValue);
       } else {
-        url.searchParams.delete("search");
+        url.searchParams.delete("name");
       }
 
       window.history.replaceState({}, "", url);
@@ -27,7 +27,7 @@ export default class extends Controller {
   clearAndRefetch() {
     this.inputTarget.value = ""; // Clear the inputTarget value
     const url = new URL(window.location.href);
-    url.searchParams.delete("search");
+    url.searchParams.delete("name");
     window.history.replaceState({}, "", url);
     this.element.requestSubmit();
   }

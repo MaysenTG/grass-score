@@ -4,23 +4,17 @@ class GamesController < ApplicationController
 
   # GET /games or /games.json
   def index
-    if params[:search].present?
-      @games = Game.where("name ILIKE ?", "%#{params[:search]}%")
-    else
-      @games = Game.all
-    end
-
-    @query = params[:search]
+    @games = GamesFinder.query(params: games_search_params)
+    @query = games_search_params[:name]
 
     respond_to do |format|
       format.html
-      format.turbo_stream { render partial: "games_list", locals: { games: @games, query: params[:search] } }
+      format.turbo_stream { render partial: "games_list", locals: { games: @games, query: games_search_params[:name] } }
     end
   end
 
   # GET /games/1 or /games/1.json
   def show
-    # @rounds = @game.rounds
     @create_round_disabled = @game.rounds.exists?(finished: false)
   end
 
@@ -86,5 +80,9 @@ class GamesController < ApplicationController
 
   def game_params
     params.require(:game).permit(:name, :winning_score)
+  end
+
+  def games_search_params
+    params.permit(:name)
   end
 end
