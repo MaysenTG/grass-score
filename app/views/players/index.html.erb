@@ -1,0 +1,17 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Players" %>
+
+<h1>Players</h1>
+
+<div id="players">
+  <% @players.each do |player| %>
+    <%= render player %>
+    <p>
+      <%= link_to "Show this player", [@game, player] %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New player", new_game_player_path %>
+<%= link_to "Back to the game", game_path(@game) %>

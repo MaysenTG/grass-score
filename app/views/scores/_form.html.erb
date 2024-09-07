@@ -1,0 +1,73 @@
+<%= form_with(model: [@game, @round, score]) do |form| %>
+  <% if score.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(score.errors.count, "error") %> prohibited this score from being saved:</h2>
+
+      <ul>
+        <% score.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @player.present? || score.player %>
+    <%= form.hidden_field :player_id, value: (@player || score.player).id %>
+  <% else %>
+    <div class="mb-3">
+      <%= form.label :player_id, "Player", class: "form-label" %>
+      <%= form.collection_select :player_id, @game.players.select { |player| !player.scores.exists?(round_id: @round.id) }, :id, :name, { prompt: "Select a player" }, { class: "form-select" } %>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col">
+      <div class="mb-3">
+        <%= form.label :unprotected_peddle, class: "form-label" %>
+        <%= form.number_field :unprotected_peddle, class: "form-control", step: 5000, min: 0 %>
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-3">
+        <%= form.label :protected_peddle, class: "form-label" %>
+        <%= form.number_field :protected_peddle, class: "form-control", step: 5000, min: 0 %>
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-3">
+      <%= form.label :highest_peddle_in_hand, class: "form-label" %>
+      <%= form.select :highest_peddle_in_hand, Score.highest_peddle_in_hands, {}, class: "form-select" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="mb-3">
+        <%= form.label :num_sold_out, class: "form-label" %> (value: -$25,000)
+        <%= form.number_field :num_sold_out, class: "form-control", min: 0 %>
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-3">
+        <%= form.label :num_double_crossed, class: "form-label" %> (value: -$50,000)
+        <%= form.number_field :num_double_crossed, class: "form-control", min: 0 %>
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-3">
+        <%= form.label :num_utterly_wiped_out, class: "form-label" %> (value: -$100,000)
+        <%= form.number_field :num_utterly_wiped_out, class: "form-control", min: 0 %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :banker?, class: "form-label" %>
+    <%= form.check_box :banker, class: "form-check-input" %>
+  </div>
+
+  <div class="mb-5">
+    <%= form.submit submit_text, class: "btn btn-primary" %>
+  </div>
+<% end %>

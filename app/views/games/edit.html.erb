@@ -1,0 +1,6 @@
+<% content_for :title, "Editing game" %>
+
+<%= render partial: "layouts/header_and_button", locals: { :header => "Edit game", :link_title => "Back to games", :route => game_path(@game) } %>
+
+
+<%= render "form", game: @game, submit_text: "Update game" %>

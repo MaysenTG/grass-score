@@ -1,0 +1,12 @@
+<% content_for :title, "Editing round" %>
+
+<h1>Editing round</h1>
+
+<%= render "form", round: @round %>
+
+<br>
+
+<div>
+  <%= link_to "Show this round", [@game, @round] %> |
+  <%= link_to "Back to rounds", game_rounds_path(@game) %>
+</div>

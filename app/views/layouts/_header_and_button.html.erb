@@ -1,0 +1,6 @@
+<div class="d-flex justify-content-between align-items-center">
+  <% if defined?(header) && header.present? %>
+    <h1><%= header %></h1>
+  <% end %>
+  <%= link_to link_title, url_for(route), class: "btn btn-primary", role: "button", disabled: (defined?(button_disabled) && button_disabled) ? true : nil %>
+</div>

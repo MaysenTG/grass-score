@@ -1,0 +1,81 @@
+<%= render partial: "layouts/header_and_button", locals: { :header => "Round #{@round.sid}", :link_title => "Back to game", :route => game_path(@game) } %>
+
+<hr/>
+
+<% if @round.finished %>
+  <div class="alert alert-info fade show mt-1" role="alert">
+    This round is finished and cannot be edited
+  </div>
+<% end %>
+
+<h1>Scores</h1>
+
+<div class="row mb-3">
+  <% if @round.scores.count.zero? %>
+    <% @game.players.each do |player| %>
+      <div class="col-sm-6 mb-3 mb-sm-0">
+        <a href="<%= new_game_round_score_path(@game, @round, player_id: player.id) %>" class="card-link">
+          <div class="card h-100">
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <p class="card-text">Create a score for <%= player.name %></p>
+            </div>
+          </div>
+        </a>
+      </div>
+    <% end %>
+  <% else %>
+    <% @round.scores.each do |score| %>
+      <% estimated_banker_value = @round.scores.where.not(id: score.id).pluck(:unprotected_peddle).sum * 0.2 %>
+      <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= score.player.name %>
+              <% if score.banker? %>
+                - <span class="text-success">This player is the banker<span>
+              <% end %>
+            </h5>
+            <ul>
+              <li>Protected peddle: <%= number_to_currency(score.protected_peddle) %></li>
+              <li>Unprotected peddle: <%= number_to_currency(score.unprotected_peddle) %></li>
+              <li>Highest peddle in handle: <%= number_to_currency(score.highest_peddle_in_hand) %></li>
+              <% unless score.round_win_bonus == 0 %>
+                <li>Round win bonus <%= number_to_currency(score.round_win_bonus) %></li>
+              <% end %>
+              <li>Banker <%= score.banker? ? "additions" : "deductions"%>: <%= number_to_currency(score.banker_value) %></li>
+              <li>Number of sold out: <%= score.num_sold_out %></li>
+              <li>Number of double crossed: <%= score.num_double_crossed %></li>
+              <li>Number of utterly wiped out: <%= score.num_utterly_wiped_out %></li>
+            </ul>
+            <p class="d-flex flex-column">
+              <p>Total score without banker: <%= number_to_currency(score.total_pre_banker_score) %></p>
+              <p>Total score with banker: <%= number_to_currency(score.total_final_score) %></p>
+            </p>
+            <% if @round.finished? %>
+              <%= link_to "Show score", game_round_score_path(@game, @round, score), class: "btn btn-secondary" %>
+            <% else %>
+              <%= link_to "Edit score", edit_game_round_score_path(@game, @round, score), class: "btn btn-primary" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% @game.players.each do |player| %>
+      <% unless @round.scores.exists?(player_id: player.id) %>
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <a href="<%= new_game_round_score_path(@game, @round, player_id: player.id) %>" class="card-link">
+            <div class="card h-100">
+              <div class="card-body d-flex align-items-center justify-content-center">
+                <p class="card-text">Create a score for <%= player.name %></p>
+              </div>
+            </div>
+          </a>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
+<% if @round.can_be_finished? && !@round.finished? %>
+  <%= button_to "Finish round", game_round_finish_path(@game, @round), form: { data: { turbo_confirm: "Are you sure you want to finish this round? Scores can't be edited after this" } }, method: :put, class: "btn btn-primary" %>
+<% end %>

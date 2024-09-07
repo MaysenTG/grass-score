@@ -1,0 +1,53 @@
+<%= render partial: "layouts/header_and_button", locals: { :header => "Score for #{@score.player.name}", :link_title => "Back to score", :route => game_round_path(@game, @round) } %>
+
+<%= form_with(model: [@game, @round, @score], html: { disabled: true }) do |form| %>
+  <div class="row">
+    <div class="col">
+      <div class="mb-3">
+        <label class="form-label">Unprotected peddle</label>
+        <%= form.text_field :unprotected_peddle, class: "form-control", value: number_to_currency(@score.unprotected_peddle), disabled: true %>
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-3">
+        <label class="form-label">Protected peddle</label>
+        <%= form.text_field :protected_peddle, class: "form-control", value: number_to_currency(@score.protected_peddle), disabled: true %>
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-3">
+        <label class="form-label">Highest peddle in hand</label>
+        <%= form.text_field :highest_peddle_in_hand, class: "form-control", value: number_to_currency(@score.protected_peddle), disabled: true %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="mb-3">
+        <label class="form-label">Number of sold outs</label>
+        <%= form.text_field :num_sold_out, class: "form-control", value: @score.num_sold_out, disabled: true %>
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-3">
+        <label class="form-label">Number of double crossed</label>
+        <%= form.text_field :num_double_crossed, class: "form-control", value: @score.num_double_crossed, disabled: true %>
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-3">
+        <label class="form-label">Number of utterly wiped out</label>
+        <%= form.text_field :num_utterly_wiped_out, class: "form-control", value: @score.num_utterly_wiped_out, disabled: true %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :banker?, class: "form-label" %>
+    <% if @round.scores.exists?(banker: true) %>
+      <%= @score.banker? ? "This player is the banker | " : "This player is not the banker | " %>
+      Total banker value: <%= number_to_currency(@score.banker_value) %>
+    <% end %>
+  </div>
+<% end %>

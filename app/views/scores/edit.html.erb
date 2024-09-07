@@ -1,0 +1,3 @@
+<%= render partial: "layouts/header_and_button", locals: { :header => "Editing score for #{@score.player.name}", :link_title => "Back to round", :route => game_round_path(@game, @round) } %>
+
+<%= render "form", score: @score, submit_text: "Update score" %>
