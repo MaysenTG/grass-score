@@ -10,6 +10,10 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
+    namespace :users do
+      resources :suggested, only: [:index]
+    end
+
     namespace :reports do
       # resources :games, only: [:index, :show]
       # resources :rounds, only: [:index, :show]

@@ -19,10 +19,9 @@ class Game < ApplicationRecord
   private
 
   def can_be_finished?
-    return false if rounds.empty?
-
+    return errors.add(:base, "This game has no rounds and can't be finished") if rounds.empty?
+    return errors.add(:base, "This game has an in progress round and can't be finished") if rounds.exists?(finished: false)
     errors.add(:base, "This game has already been finished") if finished && rounds.all?(&:finished?)
-    errors.add(:base, "This game cannot be finished") if rounds.count == 0
   end
 
   def winning_score_greater_than_highest_player_score

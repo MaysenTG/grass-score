@@ -1,4 +1,4 @@
-<%= form_with(model: [@game, player]) do |form| %>
+<%= form_with(model: [@game, player], data: { controller: "suggested-user" }) do |form| %>
   <% if player.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(player.errors.count, "error") %> prohibited this player from being saved:</h2>
@@ -13,13 +13,17 @@
 
   <div class="mb-3">
     <%= form.label :name, class: "form-label" %>
-    <%= form.text_field :name, class: "form-control" %>
+    <%= form.text_field :name, class: "form-control", data: { action: "suggested-user#debounceFetchUser", suggested_user_target: "input" } %>
   </div>
 
   <div class="mb-3">
     <%= form.label :user_id, class: "form-label" %>
-    <%= form.collection_select :user_id, User.all, :id, :name, { prompt: "Select user" }, class: "form-control" %>
+    <%= form.collection_select :user_id, User.all, :id, :name, { prompt: "Select user" }, class: "form-control", data: { suggested_user_target: "playerIdSelect" } %>
     <small class="form-text text-muted">Linking a user will allow you to view scores for each player at each game.</small>
+  </div>
+
+  <div class="mb-3" data-suggested-user-target="suggestedUserContainer" id="suggested-user-container">
+    <small class="form-text text-muted" id="suggested-user"></small>
   </div>
 
   <div class="mb-5">

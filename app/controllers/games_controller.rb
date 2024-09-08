@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
   before_action :set_game, only: %i[ show edit update destroy ]
-  before_action :return_to_game, only: %i[ new create edit update ]
+  before_action :return_to_game, only: %i[ new create edit update finish ]
 
   # GET /games or /games.json
   def index
@@ -68,9 +68,16 @@ class GamesController < ApplicationController
 
   def finish
     @game = Game.find(params[:game_id])
-    @game.update!(finished: true)
 
-    redirect_to game_url(@game), notice: "Game finished!"
+    respond_to do |format|
+      if @game.update(finished: true)
+        format.html { redirect_to game_url(@game), notice: "Game was successfully updated." }
+        format.json { render :show, status: :ok, location: @game }
+      else
+        format.html { redirect_to game_url(@game), notice: @game.errors.full_messages.to_sentence }
+        format.json { render json: @game.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   private

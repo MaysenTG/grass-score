@@ -98,7 +98,7 @@
                   <i class="bi bi-bank" data-bs-toggle="tooltip" data-bs-title="This player was the banker for this round" data-controller="tooltips"></i>
                 <% end %>
                 <% if round.winner == player %>
-                  <i class="bi bi-trophy-fill" data-bs-toggle="tooltip" data-bs-title="This winner won the round. They received a $20,000 cash bonus" data-controller="tooltips"></i>
+                  <i class="bi bi-trophy-fill" data-bs-toggle="tooltip" data-bs-title="This winner won the round. They received a $25,000 cash bonus" data-controller="tooltips"></i>
                 <% end %>
               <% else %>
                 <%= link_to "Score player", new_game_round_score_path(@game, round, player_id: player.id) %>
