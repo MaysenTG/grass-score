@@ -1,0 +1,5 @@
+<%= render partial: "layouts/header_and_button", locals: { :header => "Round count per game", :link_title => "Back to reports", :route => reports_path } %>
+
+<div data-controller="game-rounds-counts-reports" class="mt-3">
+  <div class="d-flex justify-content-center align-items-center" data-game-rounds-counts-reports-target="chart"></div>
+</div>

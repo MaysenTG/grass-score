@@ -1,0 +1,5 @@
+<% content_for :title, "New user" %>
+
+<%= render partial: "layouts/header_and_button", locals: { :header => "Create a new user", :link_title => "Back to users", :route => users_path } %>
+
+<%= render "form", user: @user %>

@@ -1,2 +1,10 @@
-<h1>Reports#index</h1>
-<p>Find me in app/views/reports/index.html.erb</p>
+<%= render partial: "layouts/header_and_button", locals: { :header => "Reports", :link_title => "Back to games", :route => games_path } %>
+
+<div class="list-group mt-3">
+  <%= link_to reports_games_round_counts_path, class: "list-group-item list-group-item-action" do %>
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">Game rounds counts</h5>
+    </div>
+    <p class="mb-1">View how many rounds each game has</p>
+  <% end %>
+</div>

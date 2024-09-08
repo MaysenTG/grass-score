@@ -1,0 +1,11 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Users" %>
+
+<%= render partial: "layouts/header_and_button", locals: { :header => "Users", :link_title => "Back to games", :route => games_path } %>
+
+<p>Users are global 'people' that participate in a game. Players are linked to users, which lets you show reports for how a user is performing</p>
+
+<div id="users">
+  <%= render partial: "users_list", locals: { users: @users } %>
+</div>

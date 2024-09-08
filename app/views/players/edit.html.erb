@@ -2,4 +2,4 @@
 
 <%= render partial: "layouts/header_and_button", locals: { :header => "Editing #{@player.name}", :link_title => "Back to game", :route => game_path(@game) } %>
 
-<%= render "form", player: @player %>
+<%= render "form", player: @player, submit_text: "Update user" %>

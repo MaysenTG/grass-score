@@ -16,7 +16,13 @@
     <%= form.text_field :name, class: "form-control" %>
   </div>
 
+  <div class="mb-3">
+    <%= form.label :user_id, class: "form-label" %>
+    <%= form.collection_select :user_id, User.all, :id, :name, { prompt: "Select user" }, class: "form-control" %>
+    <small class="form-text text-muted">Linking a user will allow you to view scores for each player at each game.</small>
+  </div>
+
   <div class="mb-5">
-    <%= form.submit "Create player", class: "btn btn-primary" %>
+    <%= form.submit submit_text, class: "btn btn-primary" %>
   </div>
 <% end %>

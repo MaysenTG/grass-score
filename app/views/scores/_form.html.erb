@@ -19,7 +19,6 @@
       <%= form.collection_select :player_id, @game.players.select { |player| !player.scores.exists?(round_id: @round.id) }, :id, :name, { prompt: "Select a player" }, { class: "form-select" } %>
     </div>
   <% end %>
-
   <div class="row">
     <div class="col">
       <div class="mb-3">
@@ -36,7 +35,7 @@
     <div class="col">
       <div class="mb-3">
       <%= form.label :highest_peddle_in_hand, class: "form-label" %>
-      <%= form.select :highest_peddle_in_hand, Score.highest_peddle_in_hands, {}, class: "form-select" %>
+      <%= form.select :highest_peddle_in_hand, [0, 5_000, 25_000, 50_000, 100_000].map { |value| [number_to_currency(value), value] }, {}, class: "form-select" %>
       </div>
     </div>
   </div>

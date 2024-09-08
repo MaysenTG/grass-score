@@ -6,6 +6,7 @@ class Game < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
   validate :winning_score_greater_than_highest_player_score, on: :update
+  validate :can_be_finished?, on: :update, if: :finished_changed?
 
   def leading_player
     players.max_by { |player| player.scores.sum(&:total_final_score) }
@@ -17,8 +18,16 @@ class Game < ApplicationRecord
 
   private
 
+  def can_be_finished?
+    return false if rounds.empty?
+
+    errors.add(:base, "This game has already been finished") if finished && rounds.all?(&:finished?)
+    errors.add(:base, "This game cannot be finished") if rounds.count == 0
+  end
+
   def winning_score_greater_than_highest_player_score
     highest_player_score = players.map { |player| player.scores.sum(&:total_final_score) }.max
+    return if highest_player_score.nil?
     return if winning_score > highest_player_score
 
     errors.add(:winning_score, "must be greater than the highest score than the highest player score of $#{format_number(highest_player_score)}")

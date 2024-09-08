@@ -1,6 +1,4 @@
 class Score < ApplicationRecord
-  enum :highest_peddle_in_hand, { 0 => 0, 5000 => 1, 25000 => 2, 50000 => 3 }
-
   belongs_to :round
   belongs_to :player
 
@@ -12,6 +10,8 @@ class Score < ApplicationRecord
   validates :num_utterly_wiped_out, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :banker, inclusion: { in: [true, false] }
   validates :banker, uniqueness: { scope: :round_id }, if: :banker?
+
+  validates :highest_peddle_in_hand, presence: true, inclusion: { in: [0, 5_000, 25_000, 50_000, 100_000] }
 
   validate :score_can_be_edited?, on: :update
 

@@ -4,7 +4,9 @@
       <%= game.name %> (created <%= time_ago_in_words(game.created_at) %> ago)
       <% if game.finished? %>
         <span class="badge bg-success">Finished</span>
-        <span class="badge bg-success">Winner: <%= game.leading_player.name %></span>
+        <% if game.leading_player %>
+          <span class="badge bg-success">Winner: <%= game.leading_player.name %></span>
+        <% end %>
       <% end %>
     </h5>
     <p class="card-text">
@@ -20,8 +22,10 @@
         No leading player
       <% end %>
     </p>
-    <p class="card-text">
-      <%= link_to "Show this game", game, target: "_top" %>
-    </p>
+    <div class="d-flex justify-content-between">
+      <p class="card-text">
+        <%= link_to "Show this game", game, target: "_top" %>
+      </p>
+    </div>
   </div>
 </div>

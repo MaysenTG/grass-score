@@ -1,7 +1,7 @@
 class Round < ApplicationRecord
   default_scope { order(sid: :asc) }
 
-  WIN_BONUS = 20_000.freeze
+  WIN_BONUS = 25_000.freeze
 
   belongs_to :game
   has_many :scores, dependent: :destroy

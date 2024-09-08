@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
+  resources :users
   get "reports", controller: :reports, action: :index
 
   namespace :reports do
     resources :games, only: [:index]
+    namespace :games do
+      resources :round_counts, only: [:index]
+    end
   end
 
   namespace :api do
@@ -12,6 +16,8 @@ Rails.application.routes.draw do
       # resources :scores, only: [:index, :show]
       namespace :games do
         resources :rounds
+        resources :round_counts, only: [:index, :create]
+        resources :users
       end
     end
   end

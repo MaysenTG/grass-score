@@ -1,5 +1,5 @@
 <div class="row row-cols-1 row-cols-md-1 g-4">
-  <% if @games.empty? %>
+  <% if games.empty? %>
     <div class="col">
       <div class="alert alert-info fade show mt-1" role="alert">
         <% if @query %>
@@ -10,7 +10,7 @@
       </div>
     </div>
   <% else %>
-    <% @games.each do |game| %>
+    <% games.each do |game| %>
       <div class="col">
         <%= render partial: "game_card", locals: { game: game } %>
       </div>

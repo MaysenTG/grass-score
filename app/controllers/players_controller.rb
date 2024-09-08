@@ -1,8 +1,8 @@
 class PlayersController < ApplicationController
   before_action :set_game
   before_action :set_player, only: %i[ show edit update destroy ]
-  before_action :can_create_player?
-  before_action :return_to_game, only: %i[ new create edit update destroy ]
+  before_action :can_create_player?, only: %i[ new create ]
+  before_action :return_to_game, only: %i[ new create destroy ]
 
   # GET /players or /players.json
   def index
@@ -75,7 +75,7 @@ class PlayersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def player_params
-    params.require(:player).permit(:name)
+    params.require(:player).permit(:name, :user_id)
   end
 
   def can_create_player?

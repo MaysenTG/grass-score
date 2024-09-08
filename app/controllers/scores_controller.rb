@@ -35,7 +35,6 @@ class ScoresController < ApplicationController
   # POST /scores or /scores.json
   def create
     player_id = params[:player_id] || score_params[:player_id]
-
     updated_score_params = score_params.merge(player_id: player_id)
     @score = @round.scores.build(updated_score_params)
 
@@ -94,6 +93,6 @@ class ScoresController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def score_params
-    params.require(:score).permit(:round_id, :player_id, :protected_peddle, :unprotected_peddle, :num_sold_out, :num_double_crossed, :num_utterly_wiped_out, :banker).to_h
+    params.require(:score).permit(:round_id, :player_id, :protected_peddle, :unprotected_peddle, :num_sold_out, :num_double_crossed, :num_utterly_wiped_out, :banker, :highest_peddle_in_hand).to_h
   end
 end

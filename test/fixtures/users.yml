@@ -2,8 +2,8 @@
 
 one:
   name: MyString
-  game: one
+  player: one
 
 two:
   name: MyString
-  game: two
+  player: two
