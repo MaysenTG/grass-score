@@ -1,9 +1,10 @@
 class BaseFinder
-  attr_accessor :params, :model
+  attr_accessor :params, :model, :current_account
 
-  def initialize(params: nil, model: nil, builder: nil)
+  def initialize(params: nil, model: nil, builder: nil, current_account: nil)
     self.params = remove_nulls(params || {})
     self.model = model || default_model
+    self.current_account = current_account
     @builder = builder || QueryBuilder
   end
 
@@ -25,17 +26,12 @@ class BaseFinder
 
   def sort_key(default_sort = "created_asc")
     return default_sort unless sorting?
-    sorting_key || api_sorting_key || default_sort
+    sorting_key || default_sort
   end
 
   def sorting_key
     return false unless params[:sort].present?
     params[:sort]
-  end
-
-  def api_sorting_key
-    return false unless params[:sort_by].present?
-    params[:sort_by].to_s.concat("_", params[:sort_direction] || "asc")
   end
 
   def op_query(attr, op, value)

@@ -4,7 +4,7 @@ class GamesController < ApplicationController
 
   # GET /games or /games.json
   def index
-    @games = GamesFinder.query(params: games_search_params)
+    @games = current_account.games.where("name ILIKE ?", "%#{games_search_params[:name]}%")
 
     @query = games_search_params[:name]
 
@@ -21,7 +21,7 @@ class GamesController < ApplicationController
 
   # GET /games/new
   def new
-    @game = Game.new
+    @game = current_account.games.new
   end
 
   # GET /games/1/edit
@@ -30,7 +30,8 @@ class GamesController < ApplicationController
 
   # POST /games or /games.json
   def create
-    @game = Game.new(game_params)
+    # @game = Game.new(game_params)
+    @game = current_account.games.new(game_params)
 
     respond_to do |format|
       if @game.save
@@ -67,7 +68,7 @@ class GamesController < ApplicationController
   end
 
   def finish
-    @game = Game.find(params[:game_id])
+    @game = current_account.games.find(params[:game_id])
 
     respond_to do |format|
       if @game.update(finished: true)
@@ -83,7 +84,7 @@ class GamesController < ApplicationController
   private
 
   def set_game
-    @game = Game.includes(rounds: :scores, players: :scores).find(params[:id])
+    @game = current_account.games.find(params[:id])
   end
 
   def game_params

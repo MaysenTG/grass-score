@@ -6,7 +6,7 @@ class PlayersController < ApplicationController
 
   # GET /players or /players.json
   def index
-    @players = Player.all
+    @players = current_account.players
   end
 
   # GET /players/1 or /players/1.json
@@ -65,7 +65,7 @@ class PlayersController < ApplicationController
   private
 
   def set_game
-    @game = Game.find(params[:game_id])
+    @game = current_account.games.find(params[:game_id])
   end
 
   # Use callbacks to share common setup or constraints between actions.

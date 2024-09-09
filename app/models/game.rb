@@ -1,6 +1,7 @@
 class Game < ApplicationRecord
   default_scope { order(created_at: :desc) }
 
+  belongs_to :account
   has_many :players, dependent: :destroy
   has_many :rounds, dependent: :destroy
 

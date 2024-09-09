@@ -57,6 +57,16 @@ export default class extends Controller {
           overflow: "justify",
         },
       },
+      lang: {
+        noData: "This game has no data to display",
+      },
+      noData: {
+        style: {
+          fontWeight: "bold",
+          fontSize: "15px",
+          color: "#303030",
+        },
+      },
       tooltip: {
         valueSuffix: " rounds",
       },

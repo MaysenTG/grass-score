@@ -10,6 +10,10 @@
   <strong>Game name:</strong>
   <%= @game.name %>
 </p>
+<p>
+  <strong>Winning score:</strong>
+  <%= number_to_currency(@game.winning_score) %>
+</p>
 
 <div class="d-flex justify-content-between">
   <div>
@@ -48,84 +52,86 @@
 </div>
 
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Status</th>
-      <th>Round number</th>
-      <% @game.players.each do |player| %>
-        <th>
-          <div class="d-flex align-items-center">
-            <%= player.name %>
-            <% if @game.rounds.empty? %>
-              <%= button_to game_player_path(@game, player), form: { data: { turbo_confirm: "Are you sure you want to delete this player?" } }, method: :delete, class: "btn" do %>
-                <i class="bi bi-trash-fill"></i>
-              <% end %>
-            <% end %>
-            <%= link_to edit_game_player_path(@game, player), class: "btn" do %>
-              <i class="bi bi-pencil-fill"></i>
-            <% end %>
-          </div>
-        </th>
-      <% end %>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% if @game.rounds.count == 0 %>
+<div class="table-responsive">
+  <table class="table">
+    <thead>
       <tr>
-        <td colspan="<%= @game.players.count + 3 %>" class="text-center">
-          No rounds have been created yet
-        </td>
-      </tr>
-    <% else%>
-      <% @game.rounds.each do |round| %>
-        <tr>
-          <td>
-            <% if round.finished? %>
-              <i class="bi bi-check-circle-fill"></i>
-            <% else %>
-              In progress
-            <% end %>
-          </td>
-          <td><%= round.sid %></td>
-          <% @game.players.each do |player| %>
-            <% score = round.scores.find_by(player_id: player.id) %>
-            <td>
-              <% if score %>
-                <%= number_to_currency(score.total_final_score) %>
-                <% if score.banker? %>
-                  <i class="bi bi-bank" data-bs-toggle="tooltip" data-bs-title="This player was the banker for this round" data-controller="tooltips"></i>
+        <th>Status</th>
+        <th>Round number</th>
+        <% @game.players.each do |player| %>
+          <th>
+            <div class="d-flex align-items-center">
+              <%= player.name %>
+              <% if @game.rounds.empty? %>
+                <%= button_to game_player_path(@game, player), form: { data: { turbo_confirm: "Are you sure you want to delete this player?" } }, method: :delete, class: "btn" do %>
+                  <i class="bi bi-trash-fill"></i>
                 <% end %>
-                <% if round.winner == player %>
-                  <i class="bi bi-trophy-fill" data-bs-toggle="tooltip" data-bs-title="This winner won the round. They received a $25,000 cash bonus" data-controller="tooltips"></i>
-                <% end %>
-              <% else %>
-                <%= link_to "Score player", new_game_round_score_path(@game, round, player_id: player.id) %>
               <% end %>
-            </td>
-          <% end %>
-          <td>
-            <%= link_to "Show this round", [@game, round] %>
+              <%= link_to edit_game_player_path(@game, player), class: "btn" do %>
+                <i class="bi bi-pencil-fill"></i>
+              <% end %>
+            </div>
+          </th>
+        <% end %>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @game.rounds.count == 0 %>
+        <tr>
+          <td colspan="<%= @game.players.count + 3 %>" class="text-center">
+            No rounds have been created yet
           </td>
         </tr>
-      <% end %>
-    <% end %>
-  </tbody>
-  <% if @game.rounds.count > 0 %>
-    <tfoot>
-      <tr>
-        <th></th>
-        <th>Total Score</th>
-        <% @game.players.each do |player| %>
-          <% total_score = @game.rounds.sum { |round| round.scores.find_by(player_id: player.id)&.total_final_score.to_i } %>
-          <td><%= number_to_currency(total_score) %></td>
+      <% else%>
+        <% @game.rounds.each do |round| %>
+          <tr>
+            <td>
+              <% if round.finished? %>
+                <i class="bi bi-check-circle-fill"></i>
+              <% else %>
+                In progress
+              <% end %>
+            </td>
+            <td><%= round.sid %></td>
+            <% @game.players.each do |player| %>
+              <% score = round.scores.find_by(player_id: player.id) %>
+              <td>
+                <% if score %>
+                  <%= number_to_currency(score.total_final_score) %>
+                  <% if score.banker? %>
+                    <i class="bi bi-bank" data-bs-toggle="tooltip" data-bs-title="This player was the banker for this round" data-controller="tooltips"></i>
+                  <% end %>
+                  <% if round.winner == player %>
+                    <i class="bi bi-trophy-fill" data-bs-toggle="tooltip" data-bs-title="This winner won the round. They received a $25,000 cash bonus" data-controller="tooltips"></i>
+                  <% end %>
+                <% else %>
+                  <%= link_to "Score player", new_game_round_score_path(@game, round, player_id: player.id) %>
+                <% end %>
+              </td>
+            <% end %>
+            <td>
+              <%= link_to "Show this round", [@game, round] %>
+            </td>
+          </tr>
         <% end %>
-        <td></td>
-      </tr>
-    </tfoot>
-  <% end %>
-</table>
+      <% end %>
+    </tbody>
+    <% if @game.rounds.count > 0 %>
+      <tfoot>
+        <tr>
+          <th></th>
+          <th>Total Score</th>
+          <% @game.players.each do |player| %>
+            <% total_score = @game.rounds.sum { |round| round.scores.find_by(player_id: player.id)&.total_final_score.to_i } %>
+            <td><%= number_to_currency(total_score) %></td>
+          <% end %>
+          <td></td>
+        </tr>
+      </tfoot>
+    <% end %>
+  </table>
+</div>
 
 <% unless @game.finished? %>
   <%= button_to "Finish game", game_finish_path(@game), form: { data: { turbo_confirm: "Are you sure you want to finish this game?" } }, method: :put, class: "btn btn-primary" %>

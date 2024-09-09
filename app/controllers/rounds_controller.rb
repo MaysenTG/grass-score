@@ -74,7 +74,7 @@ class RoundsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_game
-    @game = Game.find(params[:game_id])
+    @game = current_account.games.find(params[:game_id])
   end
 
   def set_round

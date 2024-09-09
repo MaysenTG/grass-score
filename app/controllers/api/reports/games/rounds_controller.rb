@@ -11,7 +11,7 @@ module Api
         private
 
         def set_game
-          @game = Game.find(params[:id]) if params[:id]
+          @game = current_account.games.find(params[:id]) if params[:id]
         end
       end
     end

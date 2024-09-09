@@ -1,5 +1,6 @@
 class GamesFinder < BaseFinder
   def query
+    byebug
     collection = by_name(model)
     collection
   end
@@ -7,7 +8,7 @@ class GamesFinder < BaseFinder
   private
 
   def default_model
-    Game.all
+    current_account.games
   end
 
   def by_name(items)

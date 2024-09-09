@@ -3,12 +3,12 @@ module Reports
     class RoundsCount
       attr_reader :games
 
-      def initialize
-        @games = Game.all
+      def initialize(current_account)
+        @games = current_account.games
       end
 
-      def self.call
-        new.call
+      def self.call(current_account)
+        new(current_account).call
       end
 
       def call

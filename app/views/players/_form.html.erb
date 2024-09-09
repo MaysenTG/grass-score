@@ -18,7 +18,7 @@
 
   <div class="mb-3">
     <%= form.label :user_id, class: "form-label" %>
-    <%= form.collection_select :user_id, User.all, :id, :name, { prompt: "Select user" }, class: "form-control", data: { suggested_user_target: "playerIdSelect" } %>
+    <%= form.collection_select :user_id, current_account.users, :id, :name, { prompt: "Select user" }, class: "form-control", data: { suggested_user_target: "playerIdSelect" } %>
     <small class="form-text text-muted">Linking a user will allow you to view scores for each player at each game.</small>
   </div>
 

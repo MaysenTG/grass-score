@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :accounts
   resources :users
   get "reports", controller: :reports, action: :index
 
@@ -15,9 +16,6 @@ Rails.application.routes.draw do
     end
 
     namespace :reports do
-      # resources :games, only: [:index, :show]
-      # resources :rounds, only: [:index, :show]
-      # resources :scores, only: [:index, :show]
       namespace :games do
         resources :rounds
         resources :round_counts, only: [:index, :create]
@@ -45,5 +43,5 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
   # Defines the root path route ("/")
-  root "games#index"
+  root "home#index"
 end

@@ -80,7 +80,7 @@ class ScoresController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_game
-    @game = Game.find(params[:game_id])
+    @game = current_account.games.find(params[:game_id])
   end
 
   def set_round
@@ -88,7 +88,7 @@ class ScoresController < ApplicationController
   end
 
   def set_score
-    @score = Score.find(params[:id])
+    @score = @round.scores.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
