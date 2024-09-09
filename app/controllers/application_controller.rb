@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   # Rescue from template not found error.
   rescue_from ActionView::MissingTemplate, ActionController::MissingExactTemplate, with: :template_not_found
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
   before_action :authenticate_account!
 
   private
@@ -14,5 +15,9 @@ class ApplicationController < ActionController::Base
 
   def template_not_found
     redirect_to root_url, notice: "The page you are looking for does not exist."
+  end
+
+  def render_404
+    redirect_to root_url, notice: "This record does not exist."
   end
 end
