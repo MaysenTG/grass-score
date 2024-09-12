@@ -39,3 +39,5 @@ gem "byebug", "~> 11.1"
 gem "devise", "~> 4.9"
 
 gem "faker", "~> 3.4"
+
+gem "dockerfile-rails", ">= 1.6", :group => :development
