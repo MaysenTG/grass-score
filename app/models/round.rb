@@ -19,15 +19,8 @@ class Round < ApplicationRecord
   end
 
   def can_create_new_round?
-    return errors.add(:base, "Cannot create a new round until there are at least 2 players.") if game.rounds.empty?
-
-    if game.rounds.where.not(id: self.id).any? { |round| !round.finished? }
-      errors.add(:base, "Cannot create a new round until all previous rounds are finished.")
-    end
-
-    if game.players.count < 2
-      errors.add(:base, "Cannot create a new round until there are at least 2 players.")
-    end
+    errors.add(:base, "Cannot create a new round until all previous rounds are finished.") if game.rounds.where.not(id: self.id).any? { |round| !round.finished? }
+    errors.add(:base, "Cannot create a new round until there are at least 2 players.") if game.players.count < 2
   end
 
   def round_has_completed?
