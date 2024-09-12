@@ -1,24 +1,33 @@
-# README
+# Grass Score
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Description
 
-Things you may want to cover:
+Grass score is a fullstack Ruby on Rails app for easy scoring of the card game Grass
 
-* Ruby version
+## Prerequisites
 
-* System dependencies
+- Docker
+- Ruby 3.3.2
 
-* Configuration
+## Installation
 
-* Database creation
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/MaysenTG/grass-score.git
+   cd myapp
+   ```
 
-* Database initialization
+## Usage
 
-* How to run the test suite
+1. Build and run the application using Docker Compose:
+   ```sh
+   docker compose up
+   ```
+2. The application should now be running and accessible at `http://localhost:3000`.
 
-* Services (job queues, cache servers, search engines, etc.)
+## Running Tests
 
-* Deployment instructions
-
-* ...
+1. To run the tests, use the following command:
+   ```sh
+   rails db:create db:schema:load && rspec
+   ```
