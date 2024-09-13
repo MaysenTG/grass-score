@@ -1,7 +1,7 @@
 <%= render partial: "layouts/header_and_button", locals: { :header => "Log in", :link_title => "Back to home", :route => root_path } %>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { data: { turbo: false } }) do |f| %>
-  <% if flash.any? %>
+  <% unless flash[:error].nil? %>
     <div style="color: red">
       <h2><%= pluralize(flash.count, "error") %> prohibited this login from being successful:</h2>
       <ul>
