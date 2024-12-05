@@ -70,7 +70,22 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
         run: |
           bin/rails db:create db:schema:load
-          bin/rspec
+          bin/rspec --format json --out tmp/rspec.json
+
+      - name: Display failed tests in job summary
+        if: failure()
+        run: |
+          echo "### Failed Tests" >> $GITHUB_STEP_SUMMARY
+
+          if File.exist?('tmp/rspec.json')
+            require 'json'
+            results = JSON.parse(File.read('tmp/rspec.json'))
+            failed_tests = results['examples'].select { |example| example['status'] == 'failed' }
+
+            failed_tests.each do |test|
+              puts "- #{test['full_description']}"
+            end
+          end
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
