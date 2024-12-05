@@ -76,16 +76,10 @@ jobs:
         if: failure()
         run: |
           echo "### Failed Tests" >> $GITHUB_STEP_SUMMARY
-
-          if File.exist?('tmp/rspec.json')
-            require 'json'
-            results = JSON.parse(File.read('tmp/rspec.json'))
-            failed_tests = results['examples'].select { |example| example['status'] == 'failed' }
-
-            failed_tests.each do |test|
-              puts "- #{test['full_description']}"
-            end
-          end
+          if [ -f tmp/rspec.json ]; then
+            failed_tests=$(jq -r '.examples[] | select(.status == "failed") | "- \(.full_description)"' tmp/rspec.json)
+            echo "$failed_tests" >> $GITHUB_STEP_SUMMARY
+          fi
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
