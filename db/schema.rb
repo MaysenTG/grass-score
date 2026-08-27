@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_09_050601) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_27_123000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,6 +57,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_09_050601) do
     t.bigint "winner_id"
     t.index ["game_id", "sid"], name: "index_rounds_on_game_id_and_sid", unique: true
     t.index ["game_id"], name: "index_rounds_on_game_id"
+  end
+
+  create_table "rules", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.jsonb "embedding", default: []
+    t.index ["title"], name: "index_rules_on_title"
   end
 
   create_table "scores", force: :cascade do |t|

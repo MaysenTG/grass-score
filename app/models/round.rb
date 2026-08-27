@@ -1,7 +1,8 @@
 class Round < ApplicationRecord
   default_scope { order(sid: :asc) }
 
-  WIN_BONUS = 25_000.freeze
+  WINNING_BONUS = 25_000.freeze
+  WIN_BONUS = WINNING_BONUS
 
   belongs_to :game
   has_many :scores, dependent: :destroy
@@ -37,7 +38,7 @@ class Round < ApplicationRecord
     return if finished?
 
     highest_score = scores.max_by(&:total_final_score)
-    highest_score.update!(round_win_bonus: WIN_BONUS, total_final_score: highest_score.total_final_score + WIN_BONUS)
+    highest_score.update!(round_win_bonus: WINNING_BONUS, total_final_score: highest_score.total_final_score + WINNING_BONUS)
     update!(finished: true, winner_id: highest_score.player_id)
   end
 end

@@ -25,21 +25,20 @@
     <% end %>
   <% else %>
     <% @round.scores.each do |score| %>
-      <% estimated_banker_value = @round.scores.where.not(id: score.id).pluck(:unprotected_peddle).sum * 0.2 %>
       <div class="col-sm-6 mb-3 mb-sm-0">
         <div class="card h-100">
           <div class="card-body">
             <h5 class="card-title">
               <%= score.player.name %>
               <% if score.banker? %>
-                - <span class="text-success">This player is the banker<span>
+                - <span class="text-success">This player is the banker</span>
               <% end %>
             </h5>
             <strong>Market stats:</strong>
             <ul>
-              <li>Protected peddle: <%= number_to_currency(score.protected_peddle) %></li>
-              <li>Unprotected peddle: <%= number_to_currency(score.unprotected_peddle) %></li>
-              <li>Highest peddle in handle: <%= number_to_currency(score.highest_peddle_in_hand) %></li>
+              <li>Protected peddle: <%= (score.protected_peddle.to_i / 1000) %>k</li>
+              <li>Unprotected peddle: <%= (score.unprotected_peddle.to_i / 1000) %>k</li>
+              <li>Highest peddle in hand: <%= (score.highest_peddle_in_hand.to_i / 1000) %>k</li>
             </ul>
             <strong>Paranoia stats:</strong>
             <ul>
@@ -52,7 +51,7 @@
               <% unless score.round_win_bonus == 0 %>
                 <li>Round win bonus <%= number_to_currency(score.round_win_bonus) %></li>
               <% end %>
-              <li>Banker <%= score.banker? ? "additions" : "deductions"%>: <%= number_to_currency(score.banker_value) %></li>
+              <li>Banker <%= score.banker? ? "additions" : "deductions"%>: <%= (score.banker_value.to_i / 1000) %>k</li>
             </ul>
             <strong>Overall:</strong>
             <p class="d-flex flex-column">

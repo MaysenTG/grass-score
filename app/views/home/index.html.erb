@@ -52,132 +52,148 @@
   </symbol>
 </svg>
 
-<div class="container col px-4 py-5">
-  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
-    <div class="col-10 col-sm-8 col-lg-6">
-      <img src="https://is4-ssl.mzstatic.com/image/thumb/Purple126/v4/69/84/72/69847246-0f5f-12a1-28be-c7febc979e49/source/512x512bb.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
-    </div>
-    <div class="col-lg-6">
-      <h1 class="display-5 lh-1 mb-3">Grass score - the online scoring app for the Grass card game</h1>
-      <p class="lead">Score, review, analyse, and determine the ultimate Grass player in this online Grass scoring app.</p>
-      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-        <% if account_signed_in? %>
-          <%= link_to "Create a new game", new_game_path, class: "btn btn-primary btn-lg px-4 me-md-2" %>
-          <%= link_to "View your games", games_path, class: "btn btn-outline-secondary btn-lg px-4 me-md-2" %>
-        <% else %>
-          <%= link_to "Sign up", new_account_registration_path, class: "btn btn-primary btn-lg px-4 me-md-2" %>
-          <%= link_to "Log in", new_account_session_path, class: "btn btn-outline-secondary btn-lg px-4 me-md-2" %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  <div class="container px-4 py-5">
-    <h2 class="pb-2 border-bottom">What does our app offer?</h2>
+<div class="dashboard-shell">
+  <section class="hero-panel">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <div class="eyebrow">Grass score</div>
+        <h1>Track every hand, round, and win without the spreadsheet chaos.</h1>
+        <p class="lead">Keep your Grass games organized, accurate, and easy to review from the first deal to the final tally.</p>
 
-    <div class="row row-cols-1 row-cols-md-2 align-items-md-center g-5 py-5">
-      <div class="col d-flex flex-column align-items-start gap-2">
-        <h2 class="fw-bold text-body-emphasis">No more manual calculations!</h2>
-        <p class="text-body-secondary">This app was built out of playing Grass for years and manually calculating player scores. This often yields incorrect scores, and we often forget banker or round win bonuses. Those times are over</p>
-        <a href="#" class="btn btn-primary btn-lg">Primary button</a>
-      </div>
+        <div class="hero-actions">
+          <% if account_signed_in? %>
+            <%= link_to "Create a new game", new_game_path, class: "btn btn-primary btn-lg" %>
+            <%= link_to "View games", games_path, class: "btn btn-outline-primary btn-lg" %>
+          <% else %>
+            <%= link_to "Sign up", new_account_registration_path, class: "btn btn-primary btn-lg" %>
+            <%= link_to "Log in", new_account_session_path, class: "btn btn-outline-primary btn-lg" %>
+          <% end %>
+        </div>
 
-      <div class="col">
-        <div class="row row-cols-1 row-cols-sm-2 g-4">
-          <div class="col d-flex flex-column gap-2">
-            <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
-              <svg class="bi" width="1em" height="1em">
-                <use xlink:href="#collection"></use>
-              </svg>
-            </div>
-            <h4 class="fw-semibold mb-0 text-body-emphasis">Accurate scoring</h4>
-            <p class="text-body-secondary">Our backend automatically calulcates banker calculations, round win bonuses, leading players, winning players, and more! No more using a notepad and manual calculations to determine the winner</p>
+        <div class="mt-3">
+          <div class="input-group">
+            <input type="search" class="form-control" placeholder="Search rules (try 'banker' or 'round')" aria-label="Search rules"
+              data-action="click->rules-search#openWithQuery focus->rules-search#openWithQuery keydown.enter->rules-search#openWithQuery" />
+            <button class="btn btn-outline-secondary" type="button" data-action="click->rules-search#openWithQuery">Search rules</button>
           </div>
+        </div>
 
-          <div class="col d-flex flex-column gap-2">
-            <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
-              <svg class="bi" width="1em" height="1em">
-                <use xlink:href="#gear-fill"></use>
-              </svg>
-            </div>
-            <h4 class="fw-semibold mb-0 text-body-emphasis">Historic data</h4>
-            <p class="text-body-secondary">Each game, round and score is stored in our databases, which means you can go back in time and view how a player performed in a certain game and round</p>
+        <div class="mini-metrics">
+          <div>
+            <span class="metric-label">Games</span>
+            <strong>Live</strong>
           </div>
-
-          <div class="col d-flex flex-column gap-2">
-            <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
-              <svg class="bi" width="1em" height="1em">
-                <use xlink:href="#speedometer"></use>
-              </svg>
-            </div>
-            <h4 class="fw-semibold mb-0 text-body-emphasis">Reports</h4>
-            <p class="text-body-secondary">Paragraph of text beneath the heading to explain the heading.</p>
+          <div>
+            <span class="metric-label">Scoring</span>
+            <strong>Auto</strong>
+          </div>
+          <div>
+            <span class="metric-label">Reports</span>
+            <strong>Instant</strong>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="container px-4 py-5">
-    <h2 class="pb-2 border-bottom">FAQs</h2>
-    <div class="accordion" id="accordionPanelsStayOpenExample">
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-controls="panelsStayOpen-collapseOne">
-          How do the scores get calculated?
-        </button>
-      </h2>
-      <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
-        <div class="accordion-body">
-          When a score is submitted, the backend calculates the score based on the rules of the Grass card game. This includes banker calculations, round win bonuses, leading players, winning players. Round win bonuses are added when the round is finished
+
+      <div class="col-lg-5">
+        <div class="dashboard-card highlight-card">
+          <div class="card-topline">
+            <span class="status-dot"></span>
+            This week
+          </div>
+          <div class="score-summary">
+            <div>
+              <span>Top score</span>
+              <strong>£120k</strong>
+            </div>
+            <div>
+              <span>Banker bonus</span>
+              <strong>+25k</strong>
+            </div>
+          </div>
+          <div class="mini-chart" aria-hidden="true">
+            <span style="height: 35%"></span>
+            <span style="height: 52%"></span>
+            <span style="height: 48%"></span>
+            <span style="height: 72%"></span>
+            <span style="height: 88%"></span>
+            <span style="height: 100%"></span>
+          </div>
         </div>
       </div>
     </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-          What are users and players?
-        </button>
-      </h2>
-      <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
-        <div class="accordion-body">
-          Players are the people who play the game. Users are the people who link to players. Players play games, users "own" players. This split is made to ensure that people aren't locked into multiple games, and so that users can stay separate of games in order to perform reports
+  </section>
+
+  <section class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon"><i class="bi bi-calculator"></i></div>
+      <h3>Automatic scoring</h3>
+      <p>Bankers, round bonuses, totals, and winner logic are handled for you so the numbers always match the table.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"><i class="bi bi-bar-chart-line"></i></div>
+      <h3>Game history</h3>
+      <p>Review every round, compare player trends, and keep a clear record of game flow without digging through paper notes.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon"><i class="bi bi-people"></i></div>
+      <h3>Player tracking</h3>
+      <p>Manage multiple players across games and keep the app organized for your regular Grass crew.</p>
+    </div>
+  </section>
+
+  <section class="info-panel">
+    <div class="section-heading">
+      <h2>Why players use it</h2>
+    </div>
+
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-6">
+        <div class="info-stack">
+          <div class="info-item">
+            <div class="info-bullet">01</div>
+            <div>
+              <h4>Fast score entries</h4>
+              <p>Enter peddle values in clean 5k steps and keep the app aligned to how Grass is actually scored.</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-bullet">02</div>
+            <div>
+              <h4>Clear round results</h4>
+              <p>Every score is stored chronologically so you can check what happened without replaying unclear rounds.</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-bullet">03</div>
+            <div>
+              <h4>Clean reporting</h4>
+              <p>View leaderboard style totals and round-by-round movement from a single screen.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="dashboard-card faq-card">
+          <h3>How scoring works</h3>
+          <div class="faq-item">
+            <strong>Market peddle:</strong>
+            <span>Entered in thousands, such as 25 for 25,000.</span>
+          </div>
+          <div class="faq-item">
+            <strong>Banker:</strong>
+            <span>Only one player can be marked banker per round.</span>
+          </div>
+          <div class="faq-item">
+            <strong>Penalties:</strong>
+            <span>Sold out, double-crossed, and wiped-out values are tallied automatically.</span>
+          </div>
         </div>
       </div>
     </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-          How many games can I create? Is there a limit?
-        </button>
-      </h2>
-      <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
-        <div class="accordion-body">
-          There's no limit! This app is free, although I may add some unobtrusive ads in the future to support the costs of hosting. You can create as many games as you want, and view them all in the games page
-        </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseFour">
-          I think the scores are incorrect, what do I do?
-        </button>
-      </h2>
-      <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse">
-        <div class="accordion-body">
-          If you think the scores are incorrect, please contact me at <a href="mailto:greenwood.maysen@gmail.com">my email</a> and I can look into it. In order to ensure data integrity, scores can't be edited after a round has been finished
-        </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFive" aria-expanded="false" aria-controls="panelsStayOpen-collapseFive">
-          No but really, how are scores calculated?
-        </button>
-      </h2>
-      <div id="panelsStayOpen-collapseFive" class="accordion-collapse collapse">
-        <div class="accordion-body">
-          When a score is created, we sum market peddle, highest peddle in hand, paranoia cards (1 per paranoia card is used), and banker calculations (if a player in the round is the banker). We then add the round win bonus to the player who won the round. Scores pre/post banker are stored to view a breakdown of the score
-        </div>
-      </div>
-    </div>
-  </div>
+  </section>
 </div>
