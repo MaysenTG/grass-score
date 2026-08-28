@@ -4,15 +4,16 @@ services:
     command: bin/rails s -p 3000 -b 0.0.0.0
     ports:
       - "3000:3000"
+    volumes:
+      - ./:/app
     depends_on:
       - db
+      - redis
     environment:
       RAILS_ENV: development
       DATABASE_URL: postgres://postgres:postgres@db:5432
       REDIS_URL: redis://redis:6379/0
       SECRET_KEY_BASE: 1234567890
-    volumes:
-      - .:/app
 
   db:
     image: postgres
@@ -23,6 +24,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres:/var/lib/postgresql/data
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
 
 volumes:
   postgres:
