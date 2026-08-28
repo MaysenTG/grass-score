@@ -39,6 +39,22 @@ export default class extends Controller {
 
   createChart(data) {
     console.log("Creating chart with data:", data);
+
+    const categories = data.categories[0] === "Round 0" ? data.categories : ["Round 0", ...data.categories];
+    const series = (data.series || []).map((entry) => {
+      const hasStartingZero = entry.data?.[0] === 0;
+      const safeData = Array.isArray(entry.data) ? entry.data : [];
+      const safePerRoundScores = Array.isArray(entry.perRoundScores)
+        ? entry.perRoundScores
+        : [];
+
+      return {
+        ...entry,
+        data: hasStartingZero ? safeData : [0, ...safeData],
+        perRoundScores: hasStartingZero ? safePerRoundScores : [0, ...safePerRoundScores],
+      };
+    });
+
     this.chart = Highcharts.chart(this.chartTarget, {
       chart: {
         type: "line",
@@ -48,7 +64,7 @@ export default class extends Controller {
         text: "Game Report",
       },
       xAxis: {
-        categories: data.categories,
+        categories,
       },
       yAxis: {
         title: {
@@ -70,6 +86,12 @@ export default class extends Controller {
           const roundIndex = this.point.index;
           const perRoundScore =
             this.series.userOptions.perRoundScores[roundIndex];
+          console.log("Tooltip data:", {
+            seriesName: this.series.name,
+            roundIndex: roundIndex,
+            perRoundScore: perRoundScore,
+            cumulativeScore: this.y,
+          });
           return `
             <b>${this.series.name}</b><br/>
             Round: ${this.x}<br/>
@@ -78,7 +100,7 @@ export default class extends Controller {
           `;
         },
       },
-      series: data.series,
+      series,
     });
   }
 
