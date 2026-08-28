@@ -24,20 +24,25 @@ module Reports
       private
 
       def categories
-        rounds.map { |round| "Round #{round.sid}" }
+        ["Round 0"] + rounds.map { |round| "Round #{round.sid}" }
       end
 
       def series
         cumulative_scores = Hash.new { |hash, key| hash[key] = 0 }
 
         players.map do |player|
+          per_round_scores = [0] + rounds.map { |round| calculate_total_score(player, round) }
+          cumulative_data = [0]
+
+          rounds.each do |round|
+            cumulative_scores[player.id] += calculate_total_score(player, round)
+            cumulative_data << cumulative_scores[player.id]
+          end
+
           {
             name: player.name,
-            data: rounds.map do |round|
-              cumulative_scores[player.id] += calculate_total_score(player, round)
-              cumulative_scores[player.id]
-            end,
-            perRoundScores: rounds.map { |round| calculate_total_score(player, round) },
+            data: cumulative_data,
+            perRoundScores: per_round_scores,
           }
         end
       end

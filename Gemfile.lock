@@ -349,6 +349,7 @@ DEPENDENCIES
   faker (~> 3.4)
   importmap-rails
   jbuilder
+  nokogiri
   pg (~> 1.5)
   puma (>= 5.0)
   rails (~> 7.2.0.beta3)

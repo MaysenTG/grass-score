@@ -40,4 +40,7 @@ gem "devise", "~> 4.9"
 
 gem "faker", "~> 3.4"
 
+# HTML parsing for importing rules
+gem "nokogiri"
+
 gem "dockerfile-rails", ">= 1.6", :group => :development

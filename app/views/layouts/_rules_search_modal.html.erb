@@ -1,0 +1,22 @@
+<!-- Rules search modal -->
+<div class="modal fade" id="rulesSearchModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Search rules</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="max-height: calc(80vh - 120px); overflow-y: auto;">
+        <div class="mb-3">
+          <input type="text" class="form-control" data-rules-search-target="input" placeholder="Search rules (natural language)" />
+        </div>
+        <div data-rules-search-target="results">
+          <!-- results injected here -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

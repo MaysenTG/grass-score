@@ -34,8 +34,8 @@ class ScoresController < ApplicationController
 
   # POST /scores or /scores.json
   def create
-    player_id = params[:player_id] || score_params[:player_id]
-    updated_score_params = score_params.merge(player_id: player_id)
+    player_id = params[:player_id] || params.dig(:score, :player_id)
+    updated_score_params = normalized_score_params.merge(player_id: player_id)
     @score = @round.scores.build(updated_score_params)
 
     respond_to do |format|
@@ -52,7 +52,7 @@ class ScoresController < ApplicationController
   # PATCH/PUT /scores/1 or /scores/1.json
   def update
     respond_to do |format|
-      if @score.update(score_params) && CalculateScores.call(@round)
+      if @score.update(normalized_score_params(id: @score.id)) && CalculateScores.call(@round)
         format.html { redirect_to game_round_path(@game, @round), notice: "Score was successfully updated." }
         format.json { render :show, status: :ok, location: @score }
       else
@@ -94,5 +94,31 @@ class ScoresController < ApplicationController
   # Only allow a list of trusted parameters through.
   def score_params
     params.require(:score).permit(:round_id, :player_id, :protected_peddle, :unprotected_peddle, :num_sold_out, :num_double_crossed, :num_utterly_wiped_out, :banker, :highest_peddle_in_hand).to_h
+  end
+
+  # Normalize inputs so users can enter thousands as whole numbers
+  # (e.g. 25 => 25,000) while keeping the stored value aligned to the 5,000 step rule.
+  def normalized_score_params(extra = {})
+    raw = params.require(:score).permit(:round_id, :player_id, :protected_peddle, :unprotected_peddle, :num_sold_out, :num_double_crossed, :num_utterly_wiped_out, :banker, :highest_peddle_in_hand).to_h
+    raw.merge!(extra) if extra.is_a?(Hash)
+
+    %w[protected_peddle unprotected_peddle highest_peddle_in_hand].each do |key|
+      next unless raw[key].present?
+
+      val = raw[key].to_s.delete(',').to_i
+      rounded_thousands = ((val.to_f / 5).round * 5)
+      raw[key] = (rounded_thousands * 1000).to_i
+    end
+
+    if raw.key?("banker")
+      wants_banker = ActiveModel::Type::Boolean.new.cast(raw["banker"])
+      if wants_banker
+        others = @round.scores.where(banker: true)
+        others = others.where.not(id: extra[:id]) if extra[:id]
+        raw["banker"] = false if others.exists?
+      end
+    end
+
+    raw
   end
 end

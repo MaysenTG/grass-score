@@ -5,19 +5,19 @@
     <div class="col">
       <div class="mb-3">
         <label class="form-label">Unprotected peddle</label>
-        <%= form.text_field :unprotected_peddle, class: "form-control", value: number_to_currency(@score.unprotected_peddle), disabled: true %>
+        <%= form.text_field :unprotected_peddle, class: "form-control", value: "#{@score.unprotected_peddle.to_i / 1000}k", disabled: true %>
       </div>
     </div>
     <div class="col">
       <div class="mb-3">
         <label class="form-label">Protected peddle</label>
-        <%= form.text_field :protected_peddle, class: "form-control", value: number_to_currency(@score.protected_peddle), disabled: true %>
+        <%= form.text_field :protected_peddle, class: "form-control", value: "#{@score.protected_peddle.to_i / 1000}k", disabled: true %>
       </div>
     </div>
     <div class="col">
       <div class="mb-3">
         <label class="form-label">Highest peddle in hand</label>
-        <%= form.text_field :highest_peddle_in_hand, class: "form-control", value: number_to_currency(@score.protected_peddle), disabled: true %>
+        <%= form.text_field :highest_peddle_in_hand, class: "form-control", value: "#{@score.highest_peddle_in_hand.to_i / 1000}k", disabled: true %>
       </div>
     </div>
   </div>

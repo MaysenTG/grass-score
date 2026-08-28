@@ -1,4 +1,7 @@
 class CalculateScores
+  BANKER_DEDUCTION_RATE = 0.2
+  BANKER_HOLDING_BONUS = 5_000
+
   PARANOIA_CARD_VALUES = {
     "sold_out" => -25_000,
     "double_crossed" => -50_000,
@@ -46,8 +49,8 @@ class CalculateScores
     banker = scores.find_by(banker: true)
     return unless banker
 
-    total_to_add_to_banker = scores.where.not(banker: true).sum(&:unprotected_peddle) * 0.2
-    banker.update!(banker_value: total_to_add_to_banker)
+    total_to_add_to_banker = scores.where.not(banker: true).select { |s| s.total_pre_banker_score > 0 }.sum { |s| s.unprotected_peddle * BANKER_DEDUCTION_RATE }
+    banker.update!(banker_value: total_to_add_to_banker + BANKER_HOLDING_BONUS)
   end
 
   def remove_banker_deductions_from_non_bankers
@@ -56,7 +59,7 @@ class CalculateScores
     scores.where.not(banker: true).each do |score|
       next if score.total_pre_banker_score <= 0
 
-      score.update!(banker_value: score.unprotected_peddle * -0.2)
+      score.update!(banker_value: score.unprotected_peddle * -BANKER_DEDUCTION_RATE)
     end
   end
 
@@ -73,11 +76,6 @@ class CalculateScores
   end
 
   def pre_banker_score(score)
-    # Doesn't include banker deductions
-    puts "TOTAL PARANOIA POINTS: #{total_paranoia_points(score)}"
-    puts "UNPROTECTED PEDDLE: #{score.unprotected_peddle}"
-    puts "PROTECTED PEDDLE: #{score.protected_peddle}"
-    puts "HIGHEST PEDDLE IN HAND: #{score.highest_peddle_in_hand}"
     [total_paranoia_points(score), score.unprotected_peddle, score.protected_peddle, -score.highest_peddle_in_hand.to_i].sum
   end
 
