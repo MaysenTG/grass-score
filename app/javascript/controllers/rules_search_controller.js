@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import Fuse from "fuse.js"
-import grassRules from "../grass-rules.js"
-import localFuse from "../fuse-index.js"
+import grassRules from "grass-rules"
+import localFuse from "fuse-index"
 
 export default class extends Controller {
   static targets = ["input", "results"]
